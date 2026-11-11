@@ -17,7 +17,7 @@ git clone https://github.com/anyan001121-dot/ai-exam-prep.git "${CODEX_HOME:-$HO
 在聊天中输入：
 
 ```text
-$ai-exam-prep 帮我准备网易互娱游戏数值策划笔试。我只有两晚，请搜索公开经验帖，给我复习顺序、练习题和解析。
+$ai-exam-prep 帮我准备南京公办小学语文教师招聘笔试。我只有两晚，请搜索公开经验帖，给我复习顺序、练习题和解析。
 ```
 
 也可以附上 JD 或笔试通知。通知里的题型、时长和分值会用于制定本次的练习安排。想了解岗位日常工作或准备面试时，可以直接写明。
@@ -30,4 +30,4 @@ $ai-exam-prep 帮我准备网易互娱游戏数值策划笔试。我只有两晚
 
 历史经验反映对应的招聘批次，样本覆盖会随岗位和公开资料而变化。网页搜索不可用时，可以把已有经验帖或 JD 贴进聊天继续整理。
 
-[看一份网易互娱数值策划复习包节选](examples/netease-game-balance.md) · [阅读技能指令](SKILL.md)
+[看一份小学语文教师招聘复习包节选](examples/primary-school-chinese-teacher.md) · [阅读技能指令](SKILL.md)
