@@ -1,6 +1,6 @@
 # AI 求职复习包
 
-`ai-exam-prep` 是一个 Codex 技能。给它公司和岗位名，或贴一份岗位描述（JD），它会自动搜索公开笔经和面经，核对原帖，再整理成带出处的考点总表、学习计划和练习题。
+`ai-exam-prep` 是一个采用 [Agent Skills 标准](https://agentskills.io/specification) 的求职备考技能。给它公司和岗位名，或贴一份岗位描述（JD），它会用当前工具的网页搜索能力找公开笔经和面经，核对原帖，再整理成带出处的考点总表、学习计划和练习题。
 
 适用于校招、实习和社招。你可以从岗位摸底一路做到限时练习，也可以只查一轮面试、学一个模块或讲一道题。
 
@@ -8,39 +8,57 @@
 
 ## 安装与更新
 
-使用 Codex 聊天或 CLI。自动检索需要当前环境支持网页搜索。技能由 Markdown 指令组成，安装时无需另配搜索 API 密钥。
+同一份 `SKILL.md` 可用于下面的工具。安装技能只需要这个文件。**自动搜帖需要当前会话能搜索网页，核对原帖需要能打开网页。** 工具暂时无法联网时，也可以提供已有经验帖、JD 或考试通知，让技能继续整理复习资料。
 
-**首次安装**
+### Claude 网页版
+
+下载 ZIP 后保持压缩状态。在 Claude 的自定义技能管理中选择上传，启用 `ai-exam-prep`。如果看不到上传入口，可以在设置中检查代码执行和文件创建功能是否开启，以及账号是否允许自定义技能。[下载 Claude 安装包](https://github.com/anyan001121-dot/ai-exam-prep/releases/latest/download/ai-exam-prep.zip) · [Claude 官方安装说明](https://support.claude.com/en/articles/12512180-use-skills-in-claude)
+
+### Codex、Claude Code、Cursor、VS Code 和 OpenCode
+
+下载 `SKILL.md`，按下表放到选定目录。`~` 表示用户主目录。用项目目录安装时，从项目里打开聊天。[打开技能文件](SKILL.md)
+
+| 工具 | 用户级安装路径 | 调用方式 |
+| --- | --- | --- |
+| Codex | `~/.codex/skills/ai-exam-prep/SKILL.md`，自定义 `CODEX_HOME` 时用该目录下的 `skills/` | 在聊天中选择 `$ai-exam-prep` |
+| Claude Code | `~/.claude/skills/ai-exam-prep/SKILL.md` | 输入 `/ai-exam-prep`。[官方文档](https://code.claude.com/docs/en/skills) |
+| Cursor | `~/.cursor/skills/ai-exam-prep/SKILL.md` | 在 Agent 聊天里选择 `/ai-exam-prep`。[官方文档](https://cursor.com/docs/skills) |
+| GitHub Copilot（VS Code） | `~/.copilot/skills/ai-exam-prep/SKILL.md` | 在 VS Code Chat 中选择 `/ai-exam-prep`。项目级路径为 `.github/skills/ai-exam-prep/SKILL.md`。[官方文档](https://code.visualstudio.com/docs/agent-customization/agent-skills) |
+| OpenCode | `~/.config/opencode/skills/ai-exam-prep/SKILL.md` | 在聊天里说「用 ai-exam-prep 帮我准备……」。[官方文档](https://opencode.ai/docs/skills/) |
+
+也可以用 Git 把仓库直接克隆到相应的 `ai-exam-prep` 目录。例如在 macOS 或 Linux 上安装到 Codex：
 
 ```bash
 git clone https://github.com/anyan001121-dot/ai-exam-prep.git "${CODEX_HOME:-$HOME/.codex}/skills/ai-exam-prep"
 ```
 
-**通过 Git 安装后的更新**
+通过 Git 安装后，在对应技能目录运行 `git pull --ff-only` 更新。手动安装时替换 `SKILL.md`。更新后开启新聊天，确认可以选中或调用技能。
+
+### OpenClaw
+
+用内置命令把技能安装到当前工作区，更新时再次运行安装命令。[OpenClaw 官方文档](https://docs.openclaw.ai/tools/skills)
 
 ```bash
-git -C "${CODEX_HOME:-$HOME/.codex}/skills/ai-exam-prep" pull --ff-only
+openclaw skills install git:anyan001121-dot/ai-exam-prep@main
 ```
-
-已有手动安装的版本时，可以更新同名技能目录下的 `SKILL.md`。安装或更新后，在 Codex 里开启一个新聊天，输入 `$ai-exam-prep` 加上你的任务。[打开技能文件](SKILL.md)
 
 ## 快速开始
 
 提供**岗位方向**就可以开始。加上公司、团队、招聘类型或届次，有助于找到更匹配的经验帖。已有考试通知时，可以贴出题型、时长、分值和作答语言。再补充剩余的备考时间和已学内容，技能会据此安排复习顺序。
 
 ```text
-$ai-exam-prep 帮我准备腾讯算法工程师技术面试。我只有两晚，每晚一小时。请搜索公开面经，整理考点总表、项目追问和原创练习。
+用 ai-exam-prep 帮我准备腾讯算法工程师技术面试。我只有两晚，每晚一小时。请搜索公开面经，整理考点总表、项目追问和原创练习。
 ```
 
 ### 常用场景
 
 | 你想做什么 | 可以这样问 |
 | --- | --- |
-| 了解岗位 | `$ai-exam-prep 根据这份 JD，说明日常工作、主要产出和考核环节，再找公开经验帖。` |
-| 从头准备笔试 | `$ai-exam-prep 帮我准备软件测试工程师校招笔试。先给模块总表，标出考点、题型、掌握深度和出处，再带我学第一节。` |
-| 同时准备多个岗位 | `$ai-exam-prep 比较数据分析师和商业分析师的笔试，合并共通模块，标出各自需要单独补的考点。` |
-| 按通知做模拟卷 | `$ai-exam-prep 按我附上的笔试通知出一套原创模拟卷。沿用题型、时长和分值，单独给答案与解析。` |
-| 练技术面或行为面 | `$ai-exam-prep 根据公开面经和我提供的项目经历做模拟面试。一次问一题，等我答完再点评或追问。` |
+| 了解岗位 | `用 ai-exam-prep 根据这份 JD，说明日常工作、主要产出和考核环节，再找公开经验帖。` |
+| 从头准备笔试 | `用 ai-exam-prep 帮我准备软件测试工程师校招笔试。先给模块总表，标出考点、题型、掌握深度和出处，再带我学第一节。` |
+| 同时准备多个岗位 | `用 ai-exam-prep 比较数据分析师和商业分析师的笔试，合并共通模块，标出各自需要单独补的考点。` |
+| 按通知做模拟卷 | `用 ai-exam-prep 按我附上的笔试通知出一套原创模拟卷。沿用题型、时长和分值，单独给答案与解析。` |
+| 练技术面或行为面 | `用 ai-exam-prep 根据公开面经和我提供的项目经历做模拟面试。一次问一题，等我答完再点评或追问。` |
 
 在同一个聊天里可以接着说「继续下一节」「这一步为什么成立」「换一个条件再考我」或「把这一章整理成总结表」。需要留存时，可以要求把复习包保存为 Markdown 文件。
 
